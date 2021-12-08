@@ -33,7 +33,7 @@ build-modules-robuild:
       fi
       echo "This is version: $version"
       if [ -f /tmp/built,a91 ] ; then
-          cp /tmp/built,a91 "JoystickParallel-$version.zip"
+          cp /tmp/built,a91 "StrongCopy-$version.zip"
       else
           echo "No archive was built?"
           exit 1
@@ -42,7 +42,7 @@ build-modules-robuild:
   artifacts:
       when: always
       paths:
-          - JoystickParallel-*.zip
+          - StrongCopy-*.zip
 
   tags:
     - linux
