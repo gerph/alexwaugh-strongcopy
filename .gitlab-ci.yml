@@ -11,7 +11,7 @@ variables:
 
 
 #### Builds ####
-build-modules-robuild:
+build-riscos:
   # Builds using the RISC OS Build service.
   stage: build
   script:
@@ -33,7 +33,7 @@ build-modules-robuild:
       fi
       echo "This is version: $version"
       if [ -f /tmp/built,a91 ] ; then
-          cp /tmp/built,a91 "StrongCopy-$version.zip"
+          cp /tmp/built,a91 "StrongCopy-RISCOS-$version.zip"
       else
           echo "No archive was built?"
           exit 1
@@ -42,7 +42,41 @@ build-modules-robuild:
   artifacts:
       when: always
       paths:
-          - StrongCopy-*.zip
+          - StrongCopy-RISCOS-*.zip
+
+  tags:
+    - linux
+
+
+build-ubuntu:
+  # Builds using the RISC OS Build service.
+  stage: build
+  script:
+    # Build strongcopy
+    - |
+      cd posix
+      make
+      cd ..
+
+    # Rename the file we got
+    - |
+      if [[ -f VersionNum ]] ; then
+          version=$(sed '/MajorVersion / ! d ; s/.*MajorVersion *"\(.*\)"/\1/' VersionNum)
+      else
+          version=$(git rev-parse --short HEAD)
+      fi
+      echo "This is version: $version"
+      if [ -f posix/strongcopy ] ; then
+          cp posix/strongcopy "strongcopy-ubuntu-$version"
+      else
+          echo "No binary was built?"
+          exit 1
+      fi
+
+  artifacts:
+      when: always
+      paths:
+          - strongcopy-ubuntu-*
 
   tags:
     - linux
