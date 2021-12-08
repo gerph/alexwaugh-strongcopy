@@ -68,6 +68,8 @@ typedef long int32_t;
 #include <stdint.h>
 #endif
 
+#include "VersionNum"
+
 #ifdef SCL
 #define DIRSEP "."
 #else
@@ -291,16 +293,18 @@ int add_dir(const char *dirname, int *dirlength)
         return file_offset;
 }
 
-#define usage() do { \
-        fprintf(stderr, "Usage: %s [-v] [-o outputfile] [inputdir]\n", argv[0]); \
-        exit(1); \
-} while (0);
+void usage(char *argv[], int fail)
+{
+        fprintf(fail ? stderr : stdout, "StrongCopy %s\n", Module_FullVersionAndDate);
+        fprintf(fail ? stderr : stdout, "Usage: %s [-h] [-v] [-o outputfile] [inputdir]\n", argv[0]);
+        exit(fail ? 1 : 0);
+}
 
 int main(int argc, char *argv[])
 {
         struct header headerblock;
         int rootdirlength;
-        char optstring[] = "vo:";
+        char optstring[] = "vho:";
         char *outfile = "Manual";
         char *indir = ".";
         int optch;
@@ -313,6 +317,9 @@ int main(int argc, char *argv[])
 
         while ((optch = getopt(argc, argv, optstring)) != -1) {
                 switch (optch) {
+                case 'h':
+                        usage(argv, 0);
+                        break;
                 case 'v':
                         verbose = 1;
                         break;
@@ -320,11 +327,11 @@ int main(int argc, char *argv[])
                         outfile = optarg;
                         break;
                 default:
-                        usage();
+                        usage(argv, 1);
                         break;
                 }
         }
-        if (optind < argc - 1) usage();
+        if (optind < argc - 1) usage(argv, 1);
         if (optind < argc) indir = argv[optind];
 
         if (strchr(outfile, ',') == NULL) {
