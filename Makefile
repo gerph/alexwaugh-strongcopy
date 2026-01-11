@@ -3,14 +3,14 @@
 
 COMPONENT  = StrongCopy
 TYPE       = aif
-INCLUDES   = <Lib$Dir>.Getopt.
+INCLUDES   = C:GetOpt.
 OBJS       = o.strongcopy \
              o.unixdirs
 CDEFINES   = -DSCL
-LIBS       = ${CLIB} <Lib$Dir>.GetOpt.o.LibGetOpt
+LIBS       = ${CLIB} C:GetOpt.o.libGetOpt
 
 include LibraryCommand
 
 #---------------------------------------------------------------------------
 # Dynamic dependencies:
-o.strongcopy: c.strongcopy h.unixdirs <Lib$Dir>.Getopt.h.getopt C:h.kernel C:h.swis
+o.strongcopy: c.strongcopy h.unixdirs C:Getopt.h.getopt C:h.kernel C:h.swis
