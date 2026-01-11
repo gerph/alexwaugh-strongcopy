@@ -122,8 +122,8 @@ jobs:
               echo "No binary was built?"
               exit 1
           fi
-          echo "::set-output name=version::$version"
-          echo "::set-output name=leafname::$leafname"
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "leafname=$leafname" >> $GITHUB_OUTPUT
 
       - uses: actions/upload-artifact@v6
         with:
